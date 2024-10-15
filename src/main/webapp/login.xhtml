@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/layout/layout.xhtml">
+
+    <ui:define name="content">
+        <div class="container mt-5">
+            <h2 class="text-center mb-4">Página de Login e Cadastro</h2>
+
+            <div class="row">
+                <!-- Formulário de Login -->
+                <div class="col-md-6">
+                    <h3>Login</h3>
+                    <h:form>
+                        <div class="mb-3">
+                            <h:outputLabel value="E-mail:" for="emailLogin" />
+                            <h:inputText id="emailLogin" styleClass="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <h:outputLabel value="Senha:" for="senhaLogin" />
+                            <h:inputSecret id="senhaLogin" styleClass="form-control" />
+                        </div>
+                        <!-- Simulação de login, redireciona para a página de produtos -->
+                        <h:commandButton value="Login" action="produtos?faces-redirect=true" styleClass="btn btn-primary" />
+                    </h:form>
+                </div>
+
+                <!-- Formulário de Cadastro -->
+                <div class="col-md-6">
+                    <h3>Cadastro</h3>
+                    <h:form>
+                        <div class="mb-3">
+                            <h:outputLabel value="Nome:" for="nomeCadastro" />
+                            <h:inputText id="nomeCadastro" styleClass="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <h:outputLabel value="E-mail:" for="emailCadastro" />
+                            <h:inputText id="emailCadastro" styleClass="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <h:outputLabel value="Senha:" for="senhaCadastro" />
+                            <h:inputSecret id="senhaCadastro" styleClass="form-control" />
+                        </div>
+                        <h:commandButton value="Cadastrar" action="produtos?faces-redirect=true" styleClass="btn btn-success" />
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

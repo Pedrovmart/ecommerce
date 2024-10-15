@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="jakarta.faces.core"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/layout/layout.xhtml">
+
+    <ui:define name="metadata">
+        <!-- Metadados podem ser adicionados aqui -->
+    </ui:define>
+
+    <ui:define name="content">
+        <p>Produtos Disponíveis</p>
+        <h:form>
+            <ui:repeat value="#{produtoBean.produtos}" var="produto">
+                <p:panel header="#{produto.nome}">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Descrição:"/>
+                        <p:outputLabel value="#{produto.descricao}"/>
+                        <p:outputLabel value="Preço:"/>
+                        <p:outputLabel value="#{produto.preco}">
+                            <f:convertNumber pattern="¤ #,##0.00" currencySymbol="R$"/>
+                        </p:outputLabel>
+                        <p:outputLabel value="Categoria:"/>
+                        <p:outputLabel value="#{produto.categoria}"/>
+                        <!-- Ajuste de tamanho da imagem -->
+                        <p:graphicImage value="#{produto.imagem}" alt="Imagem do Produto" style="width: 200px; height: 200px; object-fit: cover;"/>
+                    </p:panelGrid>
+
+                    <p:commandButton value="Adicionar ao Carrinho" action="#{produtoBean.adicionarAoCarrinho(produto.id)}" ajax="true"/>
+                </p:panel>
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+</ui:composition>

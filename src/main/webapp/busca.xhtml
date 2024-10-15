@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="jakarta.faces.core"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/layout/layout.xhtml">
+
+    <ui:define name="metadata">
+        <title>Busca de Produtos</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h2>Buscar Produtos</h2>
+
+        <!-- Filtros -->
+        <h:form id="filterForm">
+            <p:panelGrid columns="2" style="width: 50%; margin-bottom: 5px;" columnClasses="filter-label, filter-input">
+                <p:outputLabel for="categoria" value="Categoria:" style="margin: 0;"/>
+                <p:selectOneMenu id="categoria" value="#{produtoBean.filtroCategoria}" style="width: 80%;">
+                    <f:selectItem itemLabel="Selecione" itemValue=""/>
+                    <f:selectItems value="#{produtoBean.categorias}" var="categoria" itemValue="#{categoria}" itemLabel="#{categoria}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="precoMin" value="Preço Mínimo:" style="margin: 0;"/>
+                <p:inputText id="precoMin" value="#{produtoBean.precoMin}" placeholder="R$" style="width: 80%;" />
+
+                <p:outputLabel for="precoMax" value="Preço Máximo:" style="margin: 0;"/>
+                <p:inputText id="precoMax" value="#{produtoBean.precoMax}" placeholder="R$" style="width: 80%;" />
+            </p:panelGrid>
+
+            <!-- Botões de Filtrar e Limpar -->
+            <p:commandButton value="Filtrar" actionListener="#{produtoBean.getProdutosFiltrados}" update="produtosTable" style="margin-top: 10px;" />
+            <p:commandButton value="Limpar Filtro" action="#{produtoBean.limparFiltro}" update="filterForm produtosTable" style="margin-top: 10px; margin-left: 10px;" />
+        </h:form>
+
+        <!-- Tabela de Produtos -->
+        <p:dataTable id="produtosTable" value="#{produtoBean.produtosFiltrados}" var="produto" rows="10" paginator="true" styleClass="products-table" style="width: 100%; margin-top: 20px;">
+            <p:column headerText="Imagem" style="width: 10%; text-align: center;">
+                <p:graphicImage value="#{produto.imagem}" alt="Imagem do Produto" style="width: 50px; height: 50px;"/>
+            </p:column>
+
+            <p:column headerText="Nome" style="width: 20%; text-align: center;">
+                <h:outputText value="#{produto.nome}" style="margin: 0;"/>
+            </p:column>
+
+            <p:column headerText="Categoria" style="width: 15%; text-align: center;">
+                <h:outputText value="#{produto.categoria}" style="margin: 0;"/>
+            </p:column>
+
+            <p:column headerText="Preço" style="width: 10%; text-align: center;">
+                <h:outputText value="#{produto.preco}">
+                    <f:convertNumber pattern="¤ #,##0.00" currencySymbol="R$"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="Adicionar ao Carrinho" style="width: 10%; text-align: center;">
+                <p:commandButton value="Adicionar" action="#{produtoBean.adicionarAoCarrinho(produto.id)}" update="produtosTable" style="margin: 0;"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

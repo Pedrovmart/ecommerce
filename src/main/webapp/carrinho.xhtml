@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="jakarta.faces.core"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/layout/layout.xhtml">
+
+    <ui:define name="metadata">
+        <!-- Metadados da página -->
+    </ui:define>
+
+    <ui:define name="content">
+        <h2>Carrinho de Compras</h2>
+
+        <h:form>
+            <!-- Lista de produtos no carrinho -->
+            <p:dataTable value="#{carrinhoBean.produtosAgrupadosNoCarrinho}" var="produto" styleClass="table" rowKey="#{produto.id}">
+                <p:column headerText="Produto">
+                    <h:outputText value="#{produto.nome}" />
+                </p:column>
+
+                <p:column headerText="Quantidade">
+                    <h:outputText value="#{produto.quantidade}" />
+                </p:column>
+
+                <p:column headerText="Preço Unitário">
+                    <h:outputText value="#{produto.preco}">
+                        <f:convertNumber pattern="¤ #,##0.00" currencySymbol="R$" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Remover">
+                    <p:commandButton value="Remover Produto" action="#{carrinhoBean.removerProduto(produto.id)}" ajax="true" update="@form" styleClass="ui-button-danger"/>
+                </p:column>
+            </p:dataTable>
+
+
+            <!-- Exibe o preço total do carrinho -->
+            <h:panelGrid columns="2" styleClass="total-price-panel">
+                <h:outputLabel value="Preço Total:"/>
+                <h:outputText value="#{carrinhoBean.calcularTotal()}">
+                    <f:convertNumber pattern="¤ #,##0.00" currencySymbol="R$" />
+                </h:outputText>
+            </h:panelGrid>
+
+            <!-- Botões -->
+            <h:panelGroup layout="block" styleClass="button-panel"/>
+            <p:commandButton value="Finalizar Compra" action="#{carrinhoBean.finalizarCompra()}" styleClass="ui-button-success"/>
+            <p:commandButton value="Cancelar Compra" action="#{carrinhoBean.cancelarCompra()}" update="@form" styleClass="ui-button-danger"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

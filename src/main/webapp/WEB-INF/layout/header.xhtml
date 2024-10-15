@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"/>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <h:link outcome="/busca" class="nav-link">Busca</h:link>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="/carrinho" class="nav-link">Carrinho</h:link>
+                    </li>
+                    <li class="nav-item">
+                        <h:link outcome="/produtos" class="nav-link">Produtos</h:link>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <h:button value="Login" outcome="login" styleClass="btn btn-primary" />
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</ui:composition>

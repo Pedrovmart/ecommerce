@@ -14,14 +14,14 @@
                     <h:form>
                         <div class="mb-3">
                             <h:outputLabel value="E-mail:" for="emailLogin" />
-                            <h:inputText id="emailLogin" styleClass="form-control" />
+                            <h:inputText id="emailLogin" value="#{loginPage.username}" styleClass="form-control" />
                         </div>
                         <div class="mb-3">
                             <h:outputLabel value="Senha:" for="senhaLogin" />
-                            <h:inputSecret id="senhaLogin" styleClass="form-control" />
+                            <h:inputSecret id="senhaLogin" value="#{loginPage.password}" styleClass="form-control" />
                         </div>
-                        <!-- Simulação de login, redireciona para a página de produtos -->
-                        <h:commandButton value="Login" action="produtos?faces-redirect=true" styleClass="btn btn-primary" />
+                        <h:commandButton value="Login" action="#{loginPage.login}" styleClass="btn btn-primary" />
+                        <h:messages globalOnly="true" styleClass="text-danger" />
                     </h:form>
                 </div>
 

@@ -99,7 +99,5 @@ INSERT INTO Produto (nome, descricao, preco, categoria, imagem, estoque) VALUES 
 INSERT INTO Produto (nome, descricao, preco, categoria, imagem, estoque) VALUES ('song', 'Sing carry look money.', 455.22, 'Acessórios', 'https://picsum.photos/386/295', 20);
 INSERT INTO Produto (nome, descricao, preco, categoria, imagem, estoque) VALUES ('company', 'Space civil college raise.', 335.96, 'Eletronicos', 'https://picsum.photos/271/291', 10);
 INSERT INTO Produto (nome, descricao, preco, categoria, imagem, estoque) VALUES ('coach', 'Foreign assume any herself idea current.', 269.94, 'Eletronicos', 'https://picsum.photos/367/273', 15);
--- Inserindo dados de usuários
-INSERT INTO Usuario (nome, email, senha) VALUES ('Usuário 1', 'usuario1@exemplo.com', 'senha123');
-INSERT INTO Usuario (nome, email, senha) VALUES ('Usuário 2', 'usuario2@exemplo.com', 'senha456');
+
 

@@ -2,6 +2,9 @@ package br.com.ecommerce.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Usuario {
     @Id
@@ -10,9 +13,20 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    @OneToMany
+    @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+    private List<Grupo> grupos = new ArrayList<Grupo>();
 
     public Integer getId() {
         return id;
+    }
+
+    public List<Grupo> getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(List<Grupo> grupos) {
+        this.grupos = grupos;
     }
 
     public void setId(Integer id) {

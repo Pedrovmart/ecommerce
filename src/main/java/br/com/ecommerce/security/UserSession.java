@@ -2,7 +2,8 @@ package br.com.ecommerce.security;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.ConfigurableNavigationHandler;
-import jakarta.faces.context.*;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.security.enterprise.SecurityContext;
@@ -19,16 +20,23 @@ import java.util.logging.Logger;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    Logger LOGGER;
+
 
     @Inject
     private SecurityContext securityContext;
 
     public boolean isLoggedIn() {
-        var principal = securityContext.getCallerPrincipal();
-        LOGGER.log(Level.INFO, "CallerPrincipal: " + (principal != null ? principal.getName() : "null"));
-        return principal != null && !"anonymous".equals(principal.getName());
+        if (securityContext != null) {
+            var principal = securityContext.getCallerPrincipal();
+
+            if (principal != null && "anonymous".equals(principal.getName())) {
+
+                return false;
+            }
+            return principal != null;
+        }
+
+        return false;
     }
 
     public String getCallerName() {
@@ -39,6 +47,7 @@ public class UserSession implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ConfigurableNavigationHandler navigationHandler =
                 (ConfigurableNavigationHandler) facesContext.getApplication().getNavigationHandler();
+
         navigationHandler.performNavigation("login?faces-redirect=true");
     }
 
@@ -46,15 +55,16 @@ public class UserSession implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false); // Don't create a new session if it doesn't exist
 
         if (session != null) {
             try {
-                request.logout();
-                session.invalidate();
+                request.logout(); // Log out the user
+                session.invalidate(); // Invalidate the session
                 externalContext.getFlash().put("message", "Logout successful");
                 return "home?faces-redirect=true";
             } catch (ServletException e) {
+                // Handle any exception that may occur during logout
                 externalContext.getFlash().put("error", "Logout failed");
                 return "home?faces-redirect=true";
             }

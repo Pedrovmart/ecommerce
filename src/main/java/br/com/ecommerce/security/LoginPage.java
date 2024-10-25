@@ -1,4 +1,4 @@
-package br.com.exemplo.hotelaria.security;
+package br.com.ecommerce.security;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.ConfigurableNavigationHandler;
@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import static jakarta.faces.application.FacesMessage.SEVERITY_ERROR;
 import static jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
 
+
 @Named
 @RequestScoped
 public class LoginPage {
@@ -29,22 +30,31 @@ public class LoginPage {
     private String password;
 
     public void login() {
-        switch (securityContext.authenticate(
-                getRequest(),
-                getResponse(),
-                withParams().credential(new UsernamePasswordCredential(username, new Password(password))))) {
+        switch (
+            // Continue the authentication dialog manually by invoking the authenticate()
+            // method. The form authentication picks this up, just like a post to j_security does.
+                securityContext.authenticate(
+                        getRequest(),
+                        getResponse(),
+                        withParams()
+                                .credential(new UsernamePasswordCredential(username, new Password(password))))) {
 
             case SUCCESS:
                 ConfigurableNavigationHandler navigationHandler =
                         (ConfigurableNavigationHandler) facesContext.getApplication().getNavigationHandler();
-                navigationHandler.performNavigation("home?faces-redirect=true");
+
+                navigationHandler.performNavigation("produtos?faces-redirect=true");
                 return;
 
             case SEND_CONTINUE:
+
+                // Authentication mechanism has send a redirect, should not
+                // send anything to response from Face now.
                 facesContext.responseComplete();
                 return;
 
             case SEND_FAILURE:
+
                 addError("Login failed");
                 return;
 
@@ -69,14 +79,22 @@ public class LoginPage {
     }
 
     private HttpServletResponse getResponse() {
-        return (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        return (HttpServletResponse) facesContext
+                .getExternalContext()
+                .getResponse();
     }
 
     private HttpServletRequest getRequest() {
-        return (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        return (HttpServletRequest) facesContext
+                .getExternalContext()
+                .getRequest();
     }
 
     private void addError(String message) {
-        facesContext.addMessage(null, new FacesMessage(SEVERITY_ERROR, message, null));
+        facesContext
+                .addMessage(
+                        null,
+                        new FacesMessage(SEVERITY_ERROR, message, null));
     }
+
 }

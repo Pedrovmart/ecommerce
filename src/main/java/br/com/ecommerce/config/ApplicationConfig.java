@@ -11,20 +11,25 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @DatabaseIdentityStoreDefinition(
-        callerQuery = "select senha from usuario where nome = ?",
-        groupsQuery = "select grupo_nome from usuario_grupo where usuario_nome = ?",
-        hashAlgorithm = Pbkdf2PasswordHash.class,
-        priorityExpression = "100",
-        hashAlgorithmParameters = {
-                "${applicationConfig.hashAlgorithmParameters}"
-        }
+    callerQuery = "select senha from Usuario where email = ?",
+    groupsQuery = "select g.nome from " +
+            "usuario_grupo ug " +
+            "inner join grupo g  on (ug.grupo_id = g.id) " +
+            "inner join usuario u on (ug.usuario_id = u.id) " +
+            "where u.email = ?",
+    hashAlgorithm = Pbkdf2PasswordHash.class,
+    priorityExpression = "100",
+    hashAlgorithmParameters = {
+        "${applicationConfig.hashAlgorithmParameters}"
+    }
 )
 @CustomFormAuthenticationMechanismDefinition(
-        loginToContinue = @LoginToContinue(
-                loginPage = "/login.xhtml",
-                errorPage = ""
-        )
+    loginToContinue = @LoginToContinue(
+        loginPage="/login.xhtml",
+        errorPage=""
+    )
 )
 @DeclareRoles({ "usuario", "admin" })
 @ApplicationScoped
@@ -45,4 +50,5 @@ public class ApplicationConfig {
         parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
         return parameters;
     }
+
 }

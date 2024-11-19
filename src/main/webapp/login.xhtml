@@ -4,45 +4,76 @@
                 template="/WEB-INF/layout/layout.xhtml">
 
     <ui:define name="content">
-        <div class="container mt-5">
-            <h2 class="text-center mb-4">Página de Login e Cadastro</h2>
+        <div class="container mt-5 d-flex justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <!-- Título da Página -->
+                <h2 class="text-center mb-5">Bem-vindo! Faça Login</h2>
 
-            <div class="row">
                 <!-- Formulário de Login -->
-                <div class="col-md-6">
-                    <h3>Login</h3>
-                    <h:form>
-                        <div class="mb-3">
-                            <h:outputLabel value="E-mail:" for="emailLogin" />
-                            <h:inputText id="emailLogin" styleClass="form-control" value="#{loginPage.username}" />
-                        </div>
-                        <div class="mb-3">
-                            <h:outputLabel value="Senha:" for="senhaLogin" />
-                            <h:inputSecret id="senhaLogin" styleClass="form-control" value="#{loginPage.password}" />
-                        </div>
-                        <!-- Login Autenticado -->
-                        <h:commandButton value="Login" type="submit" action="#{loginPage.login}" ajax="false" styleClass="btn btn-primary" />
-                    </h:form>
+                <div class="card mb-4">
+                    <div class="card-header text-center">
+                        <h3>Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <h:form>
+                            <h:panelGrid columns="1" styleClass="form-grid">
+                                <div class="mb-3">
+                                    <h:outputLabel for="emailLogin" value="E-mail:" />
+                                    <h:inputText id="emailLogin" styleClass="form-control" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <h:outputLabel for="senhaLogin" value="Senha:" />
+                                    <h:inputSecret id="senhaLogin" styleClass="form-control" />
+                                </div>
+
+
+                                <div class="text-center">
+                                    <h:commandButton value="Login" action="produtos?faces-redirect=true" styleClass="btn btn-primary w-100" />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </div>
                 </div>
 
-                <!-- Formulário de Cadastro -->
-                <div class="col-md-6">
-                    <h3>Cadastro</h3>
-                    <h:form>
-                        <div class="mb-3">
-                            <h:outputLabel value="Nome:" for="nomeCadastro" />
-                            <h:inputText id="nomeCadastro" styleClass="form-control" />
+                <!-- Botão para exibir o formulário de Cadastro -->
+                <div class="text-center mb-4">
+                    <button class="btn btn-success w-100" onclick="document.getElementById('formCadastro').style.display='block'; this.style.display='none';">
+                        Não tem conta? Cadastre-se
+                    </button>
+                </div>
+
+                <!-- Formulário de Cadastro (oculto inicialmente) -->
+                <div id="formCadastro" style="display: none;">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h3>Cadastro</h3>
                         </div>
-                        <div class="mb-3">
-                            <h:outputLabel value="E-mail:" for="emailCadastro" />
-                            <h:inputText id="emailCadastro" styleClass="form-control" />
+                        <div class="card-body">
+                            <h:form>
+                                <h:panelGrid columns="1" styleClass="form-grid">
+                                    <div class="mb-3">
+                                        <h:outputLabel for="nomeCadastro" value="Nome:" />
+                                        <h:inputText id="nomeCadastro" styleClass="form-control" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h:outputLabel for="emailCadastro" value="E-mail:" />
+                                        <h:inputText id="emailCadastro" styleClass="form-control" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h:outputLabel for="senhaCadastro" value="Senha:" />
+                                        <h:inputSecret id="senhaCadastro" styleClass="form-control" />
+                                    </div>
+
+                                    <div class="text-center">
+                                        <h:commandButton value="Cadastrar" action="produtos?faces-redirect=true" styleClass="btn btn-success w-100" />
+                                    </div>
+                                </h:panelGrid>
+                            </h:form>
                         </div>
-                        <div class="mb-3">
-                            <h:outputLabel value="Senha:" for="senhaCadastro" />
-                            <h:inputSecret id="senhaCadastro" styleClass="form-control" />
-                        </div>
-                        <h:commandButton value="Cadastrar" action="produtos?faces-redirect=true" styleClass="btn btn-success" />
-                    </h:form>
+                    </div>
                 </div>
             </div>
         </div>

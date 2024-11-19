@@ -11,6 +11,7 @@
                 <span class="navbar-toggler-icon"/>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Links de Navegação -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <h:link outcome="/busca" class="nav-link">Busca</h:link>
@@ -21,11 +22,36 @@
                     <li class="nav-item">
                         <h:link outcome="/produtos" class="nav-link">Produtos</h:link>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Administração
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <h:link outcome="/admin/produtosEdit" class="dropdown-item">Produtos</h:link>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-                <div class="d-flex">
-                    <h:button value="Login" outcome="login" styleClass="btn btn-primary" />
-                </div>
 
+                <!-- Gerenciamento de Sessão -->
+                <div class="d-flex">
+                    <!-- Nome do Usuário -->
+                    <h:link class="nav-link" outcome="/privado/perfil">#{userSession.callerName}</h:link>
+
+                    <!-- Formulário de Login/Logout -->
+                    <h:form>
+                        <ui:fragment rendered="#{!userSession.loggedIn}">
+                            <p:commandLink value="Login" action="#{userSession.login()}"
+                                           styleClass="btn btn-outline-primary me-2" />
+                        </ui:fragment>
+                        <ui:fragment rendered="#{userSession.loggedIn}">
+                            <p:commandLink value="Logout" action="#{userSession.logout()}"
+                                           styleClass="btn btn-outline-primary me-2" />
+                        </ui:fragment>
+                    </h:form>
+                </div>
             </div>
         </div>
     </nav>

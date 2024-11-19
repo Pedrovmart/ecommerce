@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/layout/layout.xhtml">
+    <ui:define name="metadata">
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:dataTable value="#{produtoAdminPage.produtos}" var="produto">
+                <p:column headerText="Nome">
+                    <h:outputText value="#{produto.nome}"/>
+                </p:column>
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{produto.descricao}"/>
+                </p:column>
+                <p:column headerText="Preço">
+                    <h:outputText value="#{produto.preco}">
+                        <f:convertNumber pattern="¤#,##0.00"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Categoria">
+                    <h:outputText value="#{produto.categoria}"/>
+                </p:column>
+                <p:column headerText="Estoque">
+                    <h:outputText value="#{produto.estoque}"/>
+                </p:column>
+                <p:column headerText="Ações">
+                    <p:commandButton value="Editar" action="#{produtoAdminPage.edit(produto)}"/>
+                    <p:commandButton value="Excluir" action="#{produtoAdminPage.delete(produto)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

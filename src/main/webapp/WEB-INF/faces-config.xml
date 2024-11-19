@@ -6,4 +6,13 @@
             https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
         version="4.0">
 
+    <navigation-rule>
+        <!-- Regra de navegação para a página de edição de produtos -->
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>produtosEdit</from-outcome>
+            <to-view-id>/admin/produtosEdit.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>

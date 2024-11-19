@@ -137,4 +137,4 @@ Contribuições são bem-vindas! Caso queira contribuir, siga as diretrizes de c
 
 ## 👥 Contato
 
-- Desenvolvido por Pedro Vieira Martinelli
+- Desenvolvido por Pedro Vieira Martinelli e Pedro dias

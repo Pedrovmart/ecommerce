@@ -5,11 +5,11 @@
 
     <ui:define name="content">
         <div class="container mt-5">
-            <h2 class="text-center mb-4">Página de Login e Cadastro</h2>
+            <h2 class="text-center mb-4">Página de Login</h2>
 
             <div class="row">
                 <!-- Formulário de Login -->
-                <div class="col-md-6">
+                <div class="col-md-6 offset-md-3">
                     <h3>Login</h3>
                     <h:form>
                         <div class="mb-3">
@@ -20,28 +20,10 @@
                             <h:outputLabel value="Senha:" for="senhaLogin" />
                             <h:inputSecret id="senhaLogin" styleClass="form-control" value="#{loginPage.password}" />
                         </div>
-                        <!-- Login Autenticado -->
+                        <!-- Botão de Login -->
                         <h:commandButton value="Login" type="submit" action="#{loginPage.login}" ajax="false" styleClass="btn btn-primary" />
-                    </h:form>
-                </div>
-
-                <!-- Formulário de Cadastro -->
-                <div class="col-md-6">
-                    <h3>Cadastro</h3>
-                    <h:form>
-                        <div class="mb-3">
-                            <h:outputLabel value="Nome:" for="nomeCadastro" />
-                            <h:inputText id="nomeCadastro" styleClass="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <h:outputLabel value="E-mail:" for="emailCadastro" />
-                            <h:inputText id="emailCadastro" styleClass="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <h:outputLabel value="Senha:" for="senhaCadastro" />
-                            <h:inputSecret id="senhaCadastro" styleClass="form-control" />
-                        </div>
-                        <h:commandButton value="Cadastrar" action="produtos?faces-redirect=true" styleClass="btn btn-success" />
+                        <h:messages styleClass="text-danger mt-2" />
+                        <h:messages styleClass="text-success mt-3" />
                     </h:form>
                 </div>
             </div>

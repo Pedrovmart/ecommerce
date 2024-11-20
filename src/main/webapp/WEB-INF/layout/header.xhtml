@@ -23,9 +23,10 @@
                     </li>
                 </ul>
                 <div class="d-flex">
-                    <h:button value="Login" outcome="login" styleClass="btn btn-primary" />
+                    <h:form>
+                        <h:commandButton value="Logout" action="#{loginPage.logout}" styleClass="btn btn-danger" />
+                    </h:form>
                 </div>
-
             </div>
         </div>
     </nav>

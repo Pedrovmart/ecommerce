@@ -26,7 +26,7 @@
 
     <h:body>
         <!-- Cabeçalho da Página -->
-        <h:panelGroup layout="block" styleClass="header">
+        <h:panelGroup layout="block" styleClass="header"  rendered="#{!facesContext.viewRoot.viewId.endsWith('/login.xhtml')}">
             <ui:include src="/WEB-INF/layout/header.xhtml"/>
         </h:panelGroup>
 

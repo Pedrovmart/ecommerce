@@ -1,8 +1,9 @@
 package br.com.ecommerce;
 
-
 import br.com.ecommerce.config.ApplicationConfig;
+import br.com.ecommerce.domain.Grupo;
 import br.com.ecommerce.domain.Usuario;
+import br.com.ecommerce.repositories.GrupoRepository;
 import br.com.ecommerce.repositories.UsuarioRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
@@ -10,13 +11,9 @@ import jakarta.ejb.Startup;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 @Startup
 @Singleton
 public class EcommerceDataSetup {
-
 
     @Inject
     UsuarioRepository usuarioRepository;
@@ -27,19 +24,36 @@ public class EcommerceDataSetup {
     @Inject
     private ApplicationConfig applicationConfig;
 
+    @Inject
+    private GrupoRepository grupoRepository;
+
     @PostConstruct
     public void init() {
-
-
         passwordHash.initialize(applicationConfig.getHashAlgorithmParameterMap());
 
-        var usuario = new Usuario();
-        usuario.setNome("teste");
-        usuario.setEmail("teste@t.com");
-        usuario.setSenha(passwordHash.generate("teste123".toCharArray()));
-        usuarioRepository.save(usuario);
+        // Criar e persistir grupos
+        Grupo adminGroup = new Grupo();
+        adminGroup.setNome("admin");
+        grupoRepository.save(adminGroup); // Persistir grupo admin
 
+        Grupo userGroup = new Grupo();
+        userGroup.setNome("usuario");
+        grupoRepository.save(userGroup); // Persistir grupo usuario
 
+        // Criar usuário administrador
+        Usuario adminUser = new Usuario();
+        adminUser.setNome("Administrador");
+        adminUser.setEmail("admin@ecommerce.com");
+        adminUser.setSenha(passwordHash.generate("admin123".toCharArray()));
+        adminUser.getGrupos().add(adminGroup); // Associar grupo admin ao usuário
+        usuarioRepository.save(adminUser); // Salvar administrador
+
+        // Criar usuário comum
+        Usuario regularUser = new Usuario();
+        regularUser.setNome("Usuário Comum");
+        regularUser.setEmail("usuario@ecommerce.com");
+        regularUser.setSenha(passwordHash.generate("usuario123".toCharArray()));
+        regularUser.getGrupos().add(userGroup); // Associar grupo usuario ao usuário
+        usuarioRepository.save(regularUser); // Salvar usuário comum
     }
-
 }

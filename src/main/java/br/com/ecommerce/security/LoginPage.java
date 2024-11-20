@@ -3,6 +3,7 @@ package br.com.ecommerce.security;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.ConfigurableNavigationHandler;
 import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -12,9 +13,10 @@ import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+
 import static jakarta.faces.application.FacesMessage.SEVERITY_ERROR;
 import static jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
-
 
 @Named
 @RequestScoped
@@ -30,39 +32,72 @@ public class LoginPage {
     private String password;
 
     public void login() {
-        switch (
-            // Continue the authentication dialog manually by invoking the authenticate()
-            // method. The form authentication picks this up, just like a post to j_security does.
-                securityContext.authenticate(
-                        getRequest(),
-                        getResponse(),
-                        withParams()
-                                .credential(new UsernamePasswordCredential(username, new Password(password))))) {
+        try {
+            // Invalidar a sessão existente (se houver)
+            HttpServletRequest request = getRequest();
+            if (request.getSession(false) != null) {
+                request.getSession().invalidate(); // Invalidar sessão anterior
+            }
 
-            case SUCCESS:
-                ConfigurableNavigationHandler navigationHandler =
-                        (ConfigurableNavigationHandler) facesContext.getApplication().getNavigationHandler();
+            // Realizar autenticação
+            switch (securityContext.authenticate(
+                    request,
+                    getResponse(),
+                    withParams().credential(new UsernamePasswordCredential(username, new Password(password))))) {
 
-                navigationHandler.performNavigation("produtos?faces-redirect=true");
-                return;
+                case SUCCESS:
+                    ConfigurableNavigationHandler navigationHandler =
+                            (ConfigurableNavigationHandler) facesContext.getApplication().getNavigationHandler();
 
-            case SEND_CONTINUE:
+                    // Redirecionar com base no papel do usuário
+                    if (securityContext.isCallerInRole("admin")) {
+                        navigationHandler.performNavigation("relatorio?faces-redirect=true");
+                    } else if (securityContext.isCallerInRole("usuario")) {
+                        navigationHandler.performNavigation("produtos?faces-redirect=true");
+                    } else {
+                        addError("Permissão negada.");
+                    }
+                    return;
 
-                // Authentication mechanism has send a redirect, should not
-                // send anything to response from Face now.
-                facesContext.responseComplete();
-                return;
+                case SEND_CONTINUE:
+                    // Authentication mechanism has sent a redirect, nothing to send to the response now
+                    facesContext.responseComplete();
+                    return;
 
-            case SEND_FAILURE:
+                case SEND_FAILURE:
+                    addError("Login falhou. Verifique suas credenciais.");
+                    return;
 
-                addError("Login failed");
-                return;
-
-            default:
+                default:
+                    addError("Erro inesperado durante o login.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            addError("Erro ao realizar login.");
         }
     }
 
-    public String getUsername() {
+    public String logout() {
+        try {
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+
+            // Invalidar a sessão
+            externalContext.invalidateSession();
+
+            // Adicionar mensagem de logout
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Logout realizado com sucesso!", null));
+
+            // Redirecionar para a página de login
+            externalContext.redirect(externalContext.getRequestContextPath() + "/login.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+public String getUsername() {
         return username;
     }
 
@@ -96,5 +131,4 @@ public class LoginPage {
                         null,
                         new FacesMessage(SEVERITY_ERROR, message, null));
     }
-
 }

@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 1L;
 
-
-
     @Inject
     private SecurityContext securityContext;
 
@@ -72,5 +70,17 @@ public class UserSession implements Serializable {
             externalContext.getFlash().put("message", "No active session");
             return "home?faces-redirect=true";
         }
+    }
+
+    public boolean isAdmin() {
+        return securityContext.isCallerInRole("admin");
+    }
+
+    public boolean isUser() {
+        return securityContext.isCallerInRole("usuario");
+    }
+
+    public String getUsername() {
+        return isLoggedIn() ? securityContext.getCallerPrincipal().getName() : null;
     }
 }
